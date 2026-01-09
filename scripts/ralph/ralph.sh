@@ -94,23 +94,52 @@ main() {
         log_info "Incomplete stories: $incomplete_count"
         log_info "Next story: $next_story"
         
-        # TODO: This is where you would invoke your AI agent
-        # For now, this is a placeholder that shows the structure
-        log_warning "AI agent invocation not yet implemented"
-        log_info "You would call your AI agent here with:"
-        log_info "  - Prompt from: $PROMPT_FILE"
-        log_info "  - Working directory: $REPO_ROOT"
-        log_info "  - Story to implement: $next_story"
+        # Invoke Amp AI agent with the master prompt
+        log_info "Invoking Amp AI agent for story: $next_story"
         
-        # Placeholder: In a real implementation, you would:
-        # 1. Invoke the AI agent with the master prompt
-        # 2. Monitor its output for completion
-        # 3. Check if it updated prd.json correctly
-        # 4. Handle any errors
+        # Construct the prompt for Amp
+        local amp_prompt="You are Ralph, an autonomous AI coding agent.
+
+Read the following files before starting:
+1. $PRD_FILE - Find story $next_story
+2. $PROGRESS_FILE - Review past learnings
+3. $REPO_ROOT/AGENTS.md - Understand conventions
+
+Master Prompt:
+$(cat "$PROMPT_FILE")
+
+Current Task:
+Implement story $next_story from prd.json
+
+Remember:
+- Work on ONLY this one story
+- Follow acceptance criteria exactly
+- Run quality checks before committing
+- Update prd.json, progress.txt, and AGENTS.md after commit
+- Output <promise>COMPLETE</promise> when done if all stories pass"
+
+        # Run Amp in execute mode with dangerous allow all
+        # This allows Ralph to work autonomously without manual approvals
+        log_info "Starting Amp execution..."
         
-        # For demonstration, we'll break here
-        log_warning "Breaking loop - implement AI agent invocation to continue"
-        break
+        if ~/.amp/bin/amp --dangerously-allow-all -x "$amp_prompt" 2>&1 | tee /tmp/ralph_iteration_$iteration.log; then
+            log_success "Amp execution completed"
+            
+            # Check if the story was marked as complete
+            if grep -q "\"id\": \"$next_story\"" "$PRD_FILE" && grep -A 5 "\"id\": \"$next_story\"" "$PRD_FILE" | grep -q '"passes": true'; then
+                log_success "Story $next_story marked as complete"
+            else
+                log_warning "Story $next_story may not have been completed properly"
+                log_info "Check the log at /tmp/ralph_iteration_$iteration.log"
+            fi
+        else
+            log_error "Amp execution failed"
+            log_info "Check the log at /tmp/ralph_iteration_$iteration.log"
+            exit 1
+        fi
+        
+        # Small delay between iterations
+        sleep 2
     done
     
     if [ $iteration -eq $MAX_ITERATIONS ]; then
