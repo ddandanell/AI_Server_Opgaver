@@ -1,0 +1,24 @@
+=== RALPH PROGRESS LOG ===
+This file tracks learnings, gotchas, and patterns discovered across iterations.
+Each entry should be timestamped and reference the story ID.
+
+Format:
+[YYYY-MM-DD HH:MM] [STORY-ID] Category: Description
+
+Categories: LEARNED, GOTCHA, PATTERN, WARNING
+
+================================================================================
+
+[2026-01-10 03:51] [INIT] LEARNED: Ralph system initialized with core infrastructure
+- prd.json created with 3 example stories
+- progress.txt created for cross-iteration learning
+- AGENTS.md created for conventions tracking
+- Git remote configured to https://github.com/ddandanell/AI_Server_Opgaver.git
+
+[2026-01-10 03:51] [INIT] PATTERN: Right-sized stories should be:
+- Single endpoint/component/migration
+- Completable in one iteration
+- Have 3-5 clear acceptance criteria
+- Not require refactoring unrelated code
+
+================================================================================

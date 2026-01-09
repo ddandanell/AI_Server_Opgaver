@@ -1,0 +1,49 @@
+{
+  "stories": [
+    {
+      "id": "STORY-001",
+      "title": "Example: Add user authentication endpoint",
+      "description": "Create a single POST /api/auth/login endpoint that accepts email and password",
+      "acceptanceCriteria": [
+        "Endpoint accepts POST requests at /api/auth/login",
+        "Validates email format and password presence",
+        "Returns JWT token on successful authentication",
+        "Returns 401 on invalid credentials"
+      ],
+      "passes": false,
+      "priority": 1
+    },
+    {
+      "id": "STORY-002",
+      "title": "Example: Add database migration for users table",
+      "description": "Create a migration file that adds a users table with basic fields",
+      "acceptanceCriteria": [
+        "Migration file created in correct directory",
+        "Table includes id, email, password_hash, created_at fields",
+        "Migration runs successfully with 'up' command",
+        "Migration can be rolled back with 'down' command"
+      ],
+      "passes": false,
+      "priority": 2
+    },
+    {
+      "id": "STORY-003",
+      "title": "Example: Add UserCard component to dashboard",
+      "description": "Create a reusable UserCard component that displays user information",
+      "acceptanceCriteria": [
+        "Component accepts user object as prop",
+        "Displays user name, email, and avatar",
+        "Includes hover state with subtle animation",
+        "Component is responsive on mobile devices"
+      ],
+      "passes": false,
+      "priority": 3
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2026-01-10T03:51:00+08:00",
+    "totalStories": 3,
+    "completedStories": 0
+  }
+}
